@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import MDEditor from "@uiw/react-md-editor";
 import Note from "./Note.jsx";
@@ -15,6 +15,13 @@ function App() {
     },
   ]);
 
+  useEffect(() => {
+    let tm = localStorage.getItem("notes");
+    if (tm) {
+      setNotesArr(JSON.parse(tm));
+    }
+  }, []);
+
   const [nowEditing, setNowEditing] = useState(0);
   const changeCurrent = (index) => {
     setNowEditing(index);
@@ -24,6 +31,7 @@ function App() {
     tm[nowEditing].content = str;
     tm[nowEditing].title = str.split("\n")[0];
     setNotesArr(tm);
+    localStorage.setItem("notes", JSON.stringify(tm));
   };
 
   const addNote = () => {
@@ -38,10 +46,13 @@ function App() {
   };
 
   const deleteNote = (idx) => {
-    console.log("hii");
-    let tm = [...notesArr];
-    tm.splice(idx, 1);
-    setNotesArr(tm);
+    if (notesArr.length > 1) {
+      console.log("hii");
+      let tm = [...notesArr];
+      tm.splice(idx, 1);
+      setNotesArr(tm);
+      localStorage.setItem("notes", JSON.stringify(tm));
+    }
   };
 
   return (
@@ -57,7 +68,7 @@ function App() {
               <IoMdAddCircle />
             </button>
           </div>
-          <div className='w-full px-4'>
+          <div className='w-full'>
             {notesArr.map((ele, index) => (
               <>
                 <Note
@@ -66,6 +77,7 @@ function App() {
                   index={index}
                   deleteNote={deleteNote}
                   changeCurrent={changeCurrent}
+                  isActive={nowEditing === index}
                 />
               </>
             ))}
@@ -77,7 +89,8 @@ function App() {
             onChange={(value) => modifyCurrentNote(value)}
             value={
               // notesArr[nowEditing].title + "\n" +
-              notesArr[nowEditing].content}
+              notesArr[nowEditing].content
+            }
             height='100%'
           />
         </div>
