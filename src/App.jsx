@@ -58,16 +58,18 @@ function App() {
   return (
     <div className='container bg-gray-700'>
       <section className='flex h-dvh gap-2'>
-        <div className='w-96 bg-blue-200 flex flex-col gap-4 items-center '>
-          <div className='flex justify-around items-end p-2 w-full'>
-            <h1 className='text-4xl font-medium'>Notes</h1>
+        <div className='w-96 bg-blue-100 flex flex-col gap-4 items-center '>
+          <hr className="border-gray-500 border-2 w-full"/>
+          <div className='flex justify-around items-end px-2 py-1 w-full'>
+            <h1 className='text-4xl font-medium text-indigo-700'>Notes</h1>
             <button
-              className='text-3xl text-green-600 hover:text-green-500'
+              className='text-4xl text-green-600 hover:text-green-500'
               onClick={addNote}
             >
               <IoMdAddCircle />
             </button>
           </div>
+          <hr className="border-gray-500 border-2 w-full "/>
           <div className='w-full'>
             {notesArr.map((ele, index) => (
               <>
